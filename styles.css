@@ -134,7 +134,7 @@ body {
 .hero-content {
     position: relative;
     max-width: 600px;
-    padding: 0 50px;
+    padding: 80px 50px;
     z-index: 2;
 }
 
@@ -143,6 +143,10 @@ body {
     font-weight: 700;
     margin-bottom: 20px;
     line-height: 1.1;
+}
+
+.hero-image-placeholder{
+    padding: 0 50px;
 }
 
 .hero-description {
