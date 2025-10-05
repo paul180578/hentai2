@@ -170,15 +170,10 @@
     const initMovieNavigation = () => {    
 
         document.querySelectorAll('.movie-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
+            card.addEventListener('click', () => {
                 const movieId = card.dataset.id;
-                window.location.href = `movie-detail.html?id=${movieId}`;
+                localStorage.setItem('selectedMovie', movieId);
             });
-            
-            // En movie-detail.html, leer el parámetro
-            const urlParams = new URLSearchParams(window.location.search);
-            const movieId = urlParams.get('id');
         });
 
         document.querySelectorAll('.grid-card').forEach(card => {
