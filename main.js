@@ -596,28 +596,40 @@
 
         if (!query) return;
 
-        const movies = document.querySelectorAll('.movie-card, .grid-card');
-        const matches = [];
+        const allMovies = [
+            { id: "pelicula1", title: "Operación Centella" },
+            { id: "pelicula2", title: "Risas a Medianoche" },
+            { id: "pelicula3", title: "Harta" },
+            { id: "pelicula4", title: "El Juego del Miedo" },
+            { id: "pelicula5", title: "El Último Horizonte" },
+            { id: "pelicula6", title: "Velocidad Mortal" },
+            { id: "pelicula7", title: "Unas Vacaciones de Locura" },
+            { id: "pelicula8", title: "Corazón de Hielo" },
+            { id: "pelicula9", title: "Noche de Pánico" },
+            { id: "pelicula10", title: "Sueños Eléctricos" },
+            { id: "pelicula11", title: "Golpe Final" },
+            { id: "pelicula12", title: "Una Boda Imposible" },
+            { id: "pelicula13", title: "Bajo la Lluvia" },
+            { id: "pelicula14", title: "El Experimento" },
+            { id: "pelicula15", title: "Pesadilla Final" }
+        ];
 
-        movies.forEach(movie => {
-            const titleEl = movie.querySelector('h4');
-            const movieId = movie.dataset.id;
-            if (titleEl?.textContent.toLowerCase().includes(query)) {
-                matches.push({
-                    title: titleEl.textContent,
-                    id: movieId,
-                    link: `movie-detail.html?id=${movieId}`
-                });
-            }
-        });
+        const matches = allMovies.filter(m => 
+            m.title.toLowerCase().includes(query)
+        );
 
         if (matches.length === 0) {
             dom.searchResults.innerHTML = '<p>No se encontraron resultados</p>';
         } else {
             matches.forEach(m => {
                 const item = document.createElement('a');
-                item.href = m.link;
+                item.href = `movie-detail.html?id=${m.id}`;
                 item.textContent = m.title;
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    toggleModal(dom.searchModal, false);
+                    window.location.href = item.href;
+                });
                 dom.searchResults.appendChild(item);
             });
         }
