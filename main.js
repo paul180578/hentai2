@@ -16,9 +16,6 @@
         initNavbar();
         initMovieRows();
         initFilters();
-        initMovieNavigation();
-        initSimilarMovies();
-        loadMovieDetail();
         restoreUserData();
     };
 
@@ -36,9 +33,14 @@
         dom.filterButtons = document.querySelectorAll('.filter-btn');
         dom.addButtons = document.querySelectorAll('.btn-add');
         dom.likeButtons = document.querySelectorAll('.btn-like');
+        dom.playButtons = document.querySelectorAll('.btn-play, .btn-play-large');
+        dom.trailerBtn = document.querySelector('.btn-trailer');
+        dom.infoButtons = document.querySelectorAll('.btn-info');
     };
 
+    // Vincular eventos
     const bindEvents = () => {
+        // Modales
         if (dom.avatar && dom.registerModal) {
             dom.avatar.addEventListener('click', () => toggleModal(dom.registerModal, true));
         }
@@ -46,10 +48,8 @@
             dom.closeModal.addEventListener('click', () => toggleModal(dom.registerModal, false));
         }
         if (dom.searchBtn && dom.searchModal) {
-            dom.searchBtn.addEventListener('click', () => {
-                toggleModal(dom.searchModal, true);
-                if (dom.searchInput) dom.searchInput.focus();
-            });
+            dom.searchBtn.addEventListener('click', () => toggleModal(dom.searchModal, true));
+            if (dom.searchInput) dom.searchInput.focus();
         }
         if (dom.closeSearch && dom.searchModal) {
             dom.closeSearch.addEventListener('click', () => {
@@ -59,6 +59,7 @@
             });
         }
 
+        // Cerrar modales al hacer clic fuera
         [dom.registerModal, dom.searchModal].forEach(modal => {
             if (modal) {
                 modal.addEventListener('click', (e) => {
@@ -67,26 +68,25 @@
             }
         });
 
+        // Formulario de registro
         if (dom.userForm) dom.userForm.addEventListener('submit', handleRegister);
+
+        // Búsqueda
         if (dom.searchInput) dom.searchInput.addEventListener('input', handleSearch);
-        
-        dom.addButtons.forEach(btn => btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            handleList(btn);
-        }));
-        
-        dom.likeButtons.forEach(btn => btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            handleLike(btn);
-        }));
+
+        // Botones de películas
+        dom.addButtons.forEach(btn => btn.addEventListener('click', () => handleList(btn)));
+        dom.likeButtons.forEach(btn => btn.addEventListener('click', () => handleLike(btn)));
     };
 
+    // Toggle modal
     const toggleModal = (modal, show) => {
         if (!modal) return;
         modal.classList.toggle('visible', show);
         modal.classList.toggle('hidden', !show);
     };
 
+    // Navbar scroll effect
     const initNavbar = () => {
         if (!dom.navbar) return;
         let ticking = false;
@@ -101,6 +101,7 @@
         });
     };
 
+    // Movie rows scroll
     const initMovieRows = () => {
         document.querySelectorAll('.movie-row').forEach(row => {
             let isDown = false;
@@ -127,6 +128,7 @@
                 row.scrollLeft = scrollLeft - (x - startX) * 2;
             });
 
+            // Touch support
             let touchStartX = 0, touchScrollLeft = 0;
             row.addEventListener('touchstart', (e) => {
                 touchStartX = e.touches[0].pageX;
@@ -139,349 +141,391 @@
         });
     };
 
+    // Filtros
     const initFilters = () => {
         dom.filterButtons.forEach(btn => {
             btn.addEventListener('click', () => {
+                // Marcar el botón activo
                 dom.filterButtons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
 
-                const filter = btn.textContent.trim();
+                const filter = btn.textContent.trim(); // Ej: "Acción", "Drama"...
 
+                // Filtrar las películas
                 document.querySelectorAll('.grid-card').forEach(card => {
                     const meta = card.querySelector('.grid-meta')?.textContent || '';
-                    card.style.display = (filter === 'Todas' || meta.toLowerCase().includes(filter.toLowerCase())) ? '' : 'none';
+
+                    if (filter === 'Todas' || meta.toLowerCase().includes(filter.toLowerCase())) {
+                        card.style.display = '';  // mostrar
+                    } else {
+                        card.style.display = 'none';  // ocultar
+                    }
                 });
             });
         });
     };
 
-    const initMovieNavigation = () => {
+    
+    
+    const initMovieNavigation = () => {    
+
         document.querySelectorAll('.movie-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
+            card.addEventListener('click', () => {
                 const movieId = card.dataset.id;
-                const href = card.getAttribute('href');
-                if (movieId && href) {
-                    window.location.href = `${href}?id=${movieId}`;
-                }
+                localStorage.setItem('selectedMovie', movieId);
             });
         });
 
         document.querySelectorAll('.grid-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                e.preventDefault();
+            card.addEventListener('click', () => {
                 const movieId = card.dataset.id;
-                const href = card.getAttribute('href');
-                if (movieId && href) {
-                    window.location.href = `${href}?id=${movieId}`;
-                }
+                localStorage.setItem('selectedMovie', movieId);
             });
         });
-    };
+        if (window.location.pathname.includes('movie-detail.html')) {
+            const movieId = localStorage.getItem('selectedMovie');
+            const infoSection = document.querySelector('.detail-info-section .detail-container');
+    
+            if (!movieId || !infoSection) return;
+    
+            let movie = {};
+      
+            switch (movieId) {
+                case "pelicula1":
+                    movie = {
+                        title: "Operación Centella",
+                        year: "2024",
+                        duration: "2h 05min",
+                        rating: "★ 8.9",
+                        description: "Un agente especial debe detener una red internacional de contrabandistas antes de que estalle una guerra.",
+                        director: "Julián Cortés",
+                        cast: "Marco Díaz, Ana Vega, Carlos Muñoz",
+                        release: "2 de septiembre de 2024",
+                        classification: "R",
+                        tags: ["Explosiva", "Espionaje", "Intensa"],
+                        backdrop: "img/pelicula1.jpg",
+                        genres: "Acción",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                        };
+                        break;
+                        
+                        
+                case "pelicula2":
+                    movie = {
+                        title: "Risas a Medianoche",
+                        rating: "★ 7.8",
+                        description: "Un comediante fracasado tiene la oportunidad de su vida cuando un programa de televisión lo contacta.",
+                        director: "Camila Fuentes",
+                        cast: "Pablo Soto, Lucía Torres, Andrés Gil",
+                        genres: "Comedia",
+                        release: "11 de junio de 2023",
+                        classification: "PG-13",
+                        year: "2023",
+                        tags: ["Divertida", "Irónica", "Optimista"],
+                        backdrop: "img/pelicula2.jpg",
+                        duration: "1h 40min",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                    };
+                    break;
+                
+                case "pelicula3":
+                    movie = {
+                        title: "Harta",
+                        year: "2024",
+                        duration: "1h 55min",
+                        rating: "★ 8.7",
+                        description: "Una madre soltera enfrenta una difícil situación económica que la lleva a límites inesperados.",
+                        director: "Rosa Pérez",
+                        cast: "Carla Jiménez, Lucía Torres, Pablo Soto",
+                        genres: "Drama",
+                        release: "15 de abril de 2024",
+                        classification: "PG-13",
+                        tags: ["Impactante", "Emotiva", "Basada en hechos reales"],
+                        backdrop: "img/pelicula3.jpg",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                    };
+                    break;
+                
+                case "pelicula4":
+                    movie = {
+                        year: "2024",
+                        duration: "1h 47min",
+                        rating: "★ 8.6",
+                        description: "Cinco desconocidos despiertan encerrados en una habitación. Solo uno podrá salir con vida.",
+                        director: "Raúl Montes",
+                        cast: "Laura Gómez, Pablo Ruiz, Sara Medina",
+                        genres: "Terror",
+                        release: "31 de octubre de 2024",
+                        classification: "R",
+                        tags: ["Psicológica", "Claustrofóbica", "Siniesta"],
+                        backdrop: "img/pelicula4.jpg",
+                        title: "El Juego del Miedo",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                    };
+                    break;
+                
+                case "pelicula5":        
+                    movie = {
+                        title: "El Último Horizonte",
+                        year: "2022",
+                        duration: "2h 5min",
+                        rating: "★ 9.1",
+                        description: "En un futuro distópico, un grupo de rebeldes lucha por salvar la humanidad.",
+                        director: "Camila Ortega",
+                        cast: "Juan Ríos, Elena Suárez, Tomás Vidal",
+                        genres: "Ciencia Ficción",
+                        release: "20 de junio de 2022",
+                        classification: "PG-13",
+                        tags: ["Futurista", "Épica", "Reflexiva"],
+                        backdrop: "img/pelicula5.jpg",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                    };
+                    break;
+                    
+                case "pelicula6":
+                    movie = {
+                        title: "Velocidad Mortal",
+                        year: "2023",
+                        duration: "1h 50min",
+                        rating: "★ 8.4",
+                        description: "Un expiloto es obligado a volver a las carreras clandestinas para salvar a su hermano.",
+                        director: "Rodrigo Núñez",
+                        cast: "Iván Torres, Daniela Rojas, Álvaro Mena",
+                        release: "8 de diciembre de 2023",
+                        classification: "PG-13",
+                        tags: ["Adrenalina", "Carreras", "Explosiva"],
+                        backdrop: "img/pelicula6.jpg",
+                        genres: "Acción",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                        };
+                        break;
+                case "pelicula7":
+                    movie = {
+                        title: "Unas Vacaciones de Locura",
+                        year: "2022",
+                        duration: "1h 38min",
+                        rating: "★ 7.5",
+                        description: "Una familia viaja a la playa y descubre que nada sale como esperaban.",
+                        director: "Natalia Gómez",
+                        cast: "Tomás Ruiz, Lucía Pérez, Sergio Bravo",
+                        genres: "Comedia",
+                        release: "10 de agosto de 2022",
+                        classification: "PG",
+                        tags: ["Divertida", "Familiar", "Caótica"],
+                        backdrop: "img/pelicula7.jpg",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                    };
+                    break;
+                    
+                case "pelicula8":
+                    movie = {
+                        title: "Corazón de Hielo",
+                        year: "2018",
+                        duration: "1h 50min",
+                        rating: "★ 8.0",
+                        description: "En un remoto pueblo nórdico, dos desconocidos se encuentran en medio de una tormenta.",
+                        director: "Jorge Manzano",
+                        cast: "Elena Vidal, Marcos Herrera, Inés Pardo",
+                        genres: "Drama",
+                        release: "21 de enero de 2018",
+                        classification: "PG",
+                        tags: ["Romántica", "Fría", "Reflexiva"],
+                        backdrop: "img/pelicula8.jpg",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                    };
+                    break;
+                    
+                case "pelicula9":
+                    movie = {
+                        title: "Noche de Pánico",
+                        year: "2023",
+                        duration: "1h 44min",
+                        rating: "★ 8.3",
+                        description: "Un grupo de amigos queda atrapado en una cabaña mientras algo los acecha en la oscuridad.",
+                        director: "Marta León",
+                        cast: "Carlos Méndez, Sara Ruiz, Diego Torres",
+                        genres: "Terror",
+                        release: "13 de octubre de 2023",
+                        classification: "R",
+                        tags: ["Sangrienta", "Tensa", "Siniesta"],
+                        backdrop: "img/pelicula9.jpg",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                    };
+                    break;
+                    
+                case "pelicula10":                        
+                    movie = {
+                        title: "Sueños Eléctricos",
+                        year: "2023",
+                        duration: "1h 58min",
+                        rating: "★ 8.9",
+                        description: "En una sociedad controlada por IA, una mujer comienza a tener sueños prohibidos.",
+                        director: "Lucía Fernández",
+                        cast: "Sofía Márquez, Diego Pons, Carla Mena",
+                        genres: "Ciencia Ficción",
+                        release: "1 de agosto de 2023",
+                        classification: "PG-13",
+                        tags: ["Futurista", "Distópica", "Profunda"],
+                        backdrop: "img/pelicula10.jpg",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                    };
+                    break;
+                
+                case "pelicula11":
+                    movie = {
+                        year: "2024",
+                        duration: "2h 01min",
+                        rating: "★ 8.5",
+                        description: "Un exsoldado es reclutado para ejecutar una misión suicida en territorio enemigo.",
+                        director: "Fernando Paredes",
+                        cast: "Luis Gutiérrez, Paula Mena, Andrés Díaz",
+                        genres: "Acción",
+                        release: "19 de marzo de 2024",
+                        classification: "R",
+                        tags: ["Militar", "Heroica", "Intensa"],
+                        backdrop: "img/pelicula11.jpg",
+                        title: "Golpe Final",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                    };
+                    break;
+                
+                case "pelicula12":
+                        movie = {
+                            title: "Una Boda Imposible",
+                            year: "2020",
+                            duration: "1h 42min",
+                            rating: "★ 7.9",
+                            description: "Una novia descubre que su prometido y su mejor amiga esconden un secreto justo antes del gran día.",
+                            director: "Marina Campos",
+                            cast: "Laura Vega, Ricardo Ruiz, Sofía Lozano",
+                            genres: "Comedia",
+                            release: "5 de mayo de 2020",
+                            classification: "PG-13",
+                            tags: ["Romántica", "Divertida", "Caótica"],
+                            backdrop: "img/pelicula12.jpg",
+                            trailer: "https://www.youtube.com/watch?v=wedding001"
+                        };
+                        break;
+                
+                case "pelicula13":
+                    movie = {
+                        title: "Bajo la Lluvia",
+                        year: "2021",
+                        duration: "1h 48min",
+                        rating: "★ 8.2",
+                        description: "Un músico callejero y una abogada solitaria cruzan caminos una noche lluviosa en la ciudad.",
+                        director: "Rosa Pérez",
+                        cast: "Samuel López, Inés Rojas, Pedro Mora",
+                        genres: "Drama",
+                        release: "18 de noviembre de 2021",
+                        classification: "PG-13",
+                        tags: ["Emotiva", "Inspiradora", "Romántica"],
+                        backdrop: "img/pelicula13.jpg",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                    };
+                    break;
+                
+                case "pelicula14":
+                    movie = {
+                        title: "El Experimento",
+                        year: "2024",
+                        duration: "1h 55min",
+                        rating: "★ 9.0",
+                        description: "Un grupo de científicos realiza pruebas genéticas que terminan desatando algo incontrolable.",
+                        director: "Esteban Rivas",
+                        cast: "Camila Vega, Mario Gil, Hugo Delgado",
+                        genres: "Ciencia Ficción",
+                        release: "10 de enero de 2024",
+                        classification: "PG-13",
+                        tags: ["Científica", "Tensa", "Apocalíptica"],
+                        backdrop: "img/pelicula14.jpg",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                    };
+                    break;
+                    
+                case "pelicula15":
+                    movie = {
+                        title: "Pesadilla Final",
+                        year: "2025",
+                        duration: "1h 52min",
+                        rating: "★ 8.8",
+                        description: "Una joven descubre que sus sueños esconden un portal a una dimensión oscura.",
+                        director: "Rafael Medina",
+                        cast: "Natalia Ríos, Diego Romero, Paula Gálvez",
+                        genres: "Terror",
+                        release: "5 de octubre de 2025",
+                        classification: "R",
+                        tags: ["Pesadillesca", "Psicológica", "Sobrenatural"],
+                        backdrop: "img/pelicula15.jpg",
+                        trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0&list=RDxvFZjo5PgG0&start_radio=1"
+                    };
+                    break;                
 
-    const getMovieData = (movieId) => {
-        const movies = {
-            pelicula1: {
-                title: "Operación Centella",
-                year: "2024",
-                duration: "2h 05min",
-                rating: "★ 8.9",
-                description: "Un agente especial debe detener una red internacional de contrabandistas antes de que estalle una guerra.",
-                director: "Julián Cortés",
-                cast: "Marco Díaz, Ana Vega, Carlos Muñoz",
-                release: "2 de septiembre de 2024",
-                classification: "R",
-                tags: ["Explosiva", "Espionaje", "Intensa"],
-                backdrop: "img/pelicula1.jpg",
-                genres: "Acción",
-                trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0"
-            },
-            pelicula2: {
-                title: "Risas a Medianoche",
-                rating: "★ 7.8",
-                description: "Un comediante fracasado tiene la oportunidad de su vida cuando un programa de televisión lo contacta.",
-                director: "Camila Fuentes",
-                cast: "Pablo Soto, Lucía Torres, Andrés Gil",
-                genres: "Comedia",
-                release: "11 de junio de 2023",
-                classification: "PG-13",
-                year: "2023",
-                tags: ["Divertida", "Irónica", "Optimista"],
-                backdrop: "img/pelicula2.jpg",
-                duration: "1h 40min",
-                trailer: "https://www.youtube.com/watch?v=xvFZjo5PgG0"
-            },
-            pelicula3: {
-                title: "Harta",
-                year: "2024",
-                duration: "1h 55min",
-                rating: "★ 8.7",
-                description: "Una madre soltera enfrenta una difícil situación económica que la lleva a límites inesperados.",
-                director: "Rosa Pérez",
-                cast: "Carla Jiménez, Lucía Torres, Pablo Soto",
-                genres: "Drama",
-                release: "15 de abril de 2024",
-                classification: "PG-13",
-                tags: ["Impactante", "Emotiva", "Basada en hechos reales"],
-                backdrop: "img/pelicula3.jpg",
-                trailer: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            },
-            pelicula4: {
-                year: "2024",
-                duration: "1h 47min",
-                rating: "★ 8.6",
-                description: "Cinco desconocidos despiertan encerrados en una habitación. Solo uno podrá salir con vida.",
-                director: "Raúl Montes",
-                cast: "Laura Gómez, Pablo Ruiz, Sara Medina",
-                genres: "Terror",
-                release: "31 de octubre de 2024",
-                classification: "R",
-                tags: ["Psicológica", "Claustrofóbica", "Siniesta"],
-                backdrop: "img/pelicula4.jpg",
-                title: "El Juego del Miedo",
-                trailer: "https://www.youtube.com/watch?v=horror999"
-            },
-            pelicula5: {
-                title: "El Último Horizonte",
-                year: "2022",
-                duration: "2h 5min",
-                rating: "★ 9.1",
-                description: "En un futuro distópico, un grupo de rebeldes lucha por salvar la humanidad.",
-                director: "Camila Ortega",
-                cast: "Juan Ríos, Elena Suárez, Tomás Vidal",
-                genres: "Ciencia Ficción",
-                release: "20 de junio de 2022",
-                classification: "PG-13",
-                tags: ["Futurista", "Épica", "Reflexiva"],
-                backdrop: "img/pelicula5.jpg",
-                trailer: "https://www.youtube.com/watch?v=xyz987"
-            },
-            pelicula6: {
-                title: "Velocidad Mortal",
-                year: "2023",
-                duration: "1h 50min",
-                rating: "★ 8.4",
-                description: "Un expiloto es obligado a volver a las carreras clandestinas para salvar a su hermano.",
-                director: "Rodrigo Núñez",
-                cast: "Iván Torres, Daniela Rojas, Álvaro Mena",
-                release: "8 de diciembre de 2023",
-                classification: "PG-13",
-                tags: ["Adrenalina", "Carreras", "Explosiva"],
-                backdrop: "img/pelicula6.jpg",
-                genres: "Acción",
-                trailer: "https://www.youtube.com/watch?v=speed001"
-            },
-            pelicula7: {
-                title: "Unas Vacaciones de Locura",
-                year: "2022",
-                duration: "1h 38min",
-                rating: "★ 7.5",
-                description: "Una familia viaja a la playa y descubre que nada sale como esperaban.",
-                director: "Natalia Gómez",
-                cast: "Tomás Ruiz, Lucía Pérez, Sergio Bravo",
-                genres: "Comedia",
-                release: "10 de agosto de 2022",
-                classification: "PG",
-                tags: ["Divertida", "Familiar", "Caótica"],
-                backdrop: "img/pelicula7.jpg",
-                trailer: "https://www.youtube.com/watch?v=funnytrip"
-            },
-            pelicula8: {
-                title: "Corazón de Hielo",
-                year: "2018",
-                duration: "1h 50min",
-                rating: "★ 8.0",
-                description: "En un remoto pueblo nórdico, dos desconocidos se encuentran en medio de una tormenta.",
-                director: "Jorge Manzano",
-                cast: "Elena Vidal, Marcos Herrera, Inés Pardo",
-                genres: "Drama",
-                release: "21 de enero de 2018",
-                classification: "PG",
-                tags: ["Romántica", "Fría", "Reflexiva"],
-                backdrop: "img/pelicula8.jpg",
-                trailer: "https://www.youtube.com/watch?v=snowlove"
-            },
-            pelicula9: {
-                title: "Noche de Pánico",
-                year: "2023",
-                duration: "1h 44min",
-                rating: "★ 8.3",
-                description: "Un grupo de amigos queda atrapado en una cabaña mientras algo los acecha en la oscuridad.",
-                director: "Marta León",
-                cast: "Carlos Méndez, Sara Ruiz, Diego Torres",
-                genres: "Terror",
-                release: "13 de octubre de 2023",
-                classification: "R",
-                tags: ["Sangrienta", "Tensa", "Siniestra"],
-                backdrop: "img/pelicula9.jpg",
-                trailer: "https://www.youtube.com/watch?v=terror001"
-            },
-            pelicula10: {
-                title: "Sueños Eléctricos",
-                year: "2023",
-                duration: "1h 58min",
-                rating: "★ 8.9",
-                description: "En una sociedad controlada por IA, una mujer comienza a tener sueños prohibidos.",
-                director: "Lucía Fernández",
-                cast: "Sofía Márquez, Diego Pons, Carla Mena",
-                genres: "Ciencia Ficción",
-                release: "1 de agosto de 2023",
-                classification: "PG-13",
-                tags: ["Futurista", "Distópica", "Profunda"],
-                backdrop: "img/pelicula10.jpg",
-                trailer: "https://www.youtube.com/watch?v=aiDreams"
-            },
-            pelicula11: {
-                year: "2024",
-                duration: "2h 01min",
-                rating: "★ 8.5",
-                description: "Un exsoldado es reclutado para ejecutar una misión suicida en territorio enemigo.",
-                director: "Fernando Paredes",
-                cast: "Luis Gutiérrez, Paula Mena, Andrés Díaz",
-                genres: "Acción",
-                release: "19 de marzo de 2024",
-                classification: "R",
-                tags: ["Militar", "Heroica", "Intensa"],
-                backdrop: "img/pelicula11.jpg",
-                title: "Golpe Final",
-                trailer: "https://www.youtube.com/watch?v=action999"
-            },
-            pelicula12: {
-                title: "Una Boda Imposible",
-                year: "2020",
-                duration: "1h 42min",
-                rating: "★ 7.9",
-                description: "Una novia descubre que su prometido y su mejor amiga esconden un secreto justo antes del gran día.",
-                director: "Marina Campos",
-                cast: "Laura Vega, Ricardo Ruiz, Sofía Lozano",
-                genres: "Comedia",
-                release: "5 de mayo de 2020",
-                classification: "PG-13",
-                tags: ["Romántica", "Divertida", "Caótica"],
-                backdrop: "img/pelicula12.jpg",
-                trailer: "https://www.youtube.com/watch?v=wedding001"
-            },
-            pelicula13: {
-                title: "Bajo la Lluvia",
-                year: "2021",
-                duration: "1h 48min",
-                rating: "★ 8.2",
-                description: "Un músico callejero y una abogada solitaria cruzan caminos una noche lluviosa en la ciudad.",
-                director: "Rosa Pérez",
-                cast: "Samuel López, Inés Rojas, Pedro Mora",
-                genres: "Drama",
-                release: "18 de noviembre de 2021",
-                classification: "PG-13",
-                tags: ["Emotiva", "Inspiradora", "Romántica"],
-                backdrop: "img/pelicula13.jpg",
-                trailer: "https://www.youtube.com/watch?v=drama001"
-            },
-            pelicula14: {
-                title: "El Experimento",
-                year: "2024",
-                duration: "1h 55min",
-                rating: "★ 9.0",
-                description: "Un grupo de científicos realiza pruebas genéticas que terminan desatando algo incontrolable.",
-                director: "Esteban Rivas",
-                cast: "Camila Vega, Mario Gil, Hugo Delgado",
-                genres: "Ciencia Ficción",
-                release: "10 de enero de 2024",
-                classification: "PG-13",
-                tags: ["Científica", "Tensa", "Apocalíptica"],
-                backdrop: "img/pelicula14.jpg",
-                trailer: "https://www.youtube.com/watch?v=science999"
-            },
-            pelicula15: {
-                title: "Pesadilla Final",
-                year: "2025",
-                duration: "1h 52min",
-                rating: "★ 8.8",
-                description: "Una joven descubre que sus sueños esconden un portal a una dimensión oscura.",
-                director: "Rafael Medina",
-                cast: "Natalia Ríos, Diego Romero, Paula Gálvez",
-                genres: "Terror",
-                release: "5 de octubre de 2025",
-                classification: "R",
-                tags: ["Pesadillesca", "Psicológica", "Sobrenatural"],
-                backdrop: "img/pelicula15.jpg",
-                trailer: "https://www.youtube.com/watch?v=terrorfinal"
+                default:
+                    movie = {
+                        title: "Película no encontrada",
+                        
+                        description: "No se pudo cargar la información de esta película.",
+                        backdrop: "img/default.jpg",
+                        tags: ["Error", "Desconocida"]
+                    };
+                    break;
             }
-        };
-
-        return movies[movieId] || {
-            title: "Película no encontrada",
-            description: "No se pudo cargar la información de esta película.",
-            backdrop: "img/default.jpg",
-            tags: ["Error", "Desconocida"],
-            genres: "Desconocido"
-        };
-    };
-
-    const loadMovieDetail = () => {
-        if (!window.location.pathname.includes('movie-detail.html')) return;
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const movieId = urlParams.get('id');
-        const infoSection = document.querySelector('.detail-info-section .detail-container');
-
-        if (!movieId || !infoSection) return;
-
-        const movie = getMovieData(movieId);
-
-        infoSection.innerHTML = `
-            <div class="detail-main">
-                <h1 class="info-title">${movie.title}</h1>
-                <div class="info-meta">
-                    <span>${movie.year || ''}</span> |
-                    <span>${movie.duration || ''}</span> |
-                    <span>${movie.rating || ''}</span>
-                </div>
-                <p class="info-description">${movie.description}</p>
-
-                <div class="info-row"><span class="info-label">Director:</span><span class="info-value">${movie.director || 'N/A'}</span></div>
-                <div class="info-row"><span class="info-label">Reparto:</span><span class="info-value">${movie.cast || 'N/A'}</span></div>
-                <div class="info-row"><span class="info-label">Géneros:</span><span class="info-value">${movie.genres}</span></div>
-                <div class="info-row"><span class="info-label">Estreno:</span><span class="info-value">${movie.release || 'N/A'}</span></div>
-                <div class="info-row"><span class="info-label">Clasificación:</span><span class="info-value">${movie.classification || 'N/A'}</span></div>
-
-                <div class="tags">
-                    ${movie.tags ? movie.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : ''}
-                </div>
-
-                <div class="detail-buttons">
-                    <button class="btn-play-large" onclick="window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')">▶ Reproducir</button>
-                    <button class="btn-add">+ Mi Lista</button>
-                    <button class="btn-like">👍</button>
-                </div>
-            </div>
-
-            <div class="detail-sidebar">
-                <div class="trailer-container">
-                    <div class="trailer-placeholder">
-                        <img src="${movie.backdrop}" alt="${movie.title}" class="poster-preview">
+    
+            infoSection.innerHTML = `
+                <div class="detail-main">
+                    <h1 class="info-title">${movie.title}</h1>
+                    <div class="info-meta">
+                        <span>${movie.year || ''}</span> |
+                        <span>${movie.duration || ''}</span> |
+                        <span>${movie.rating || ''}</span>
                     </div>
-                    <button class="btn-trailer" data-trailer="${movie.trailer}">▶ Ver Tráiler</button>
+                    <p class="info-description">${movie.description}</p>
+    
+                    <div class="info-row"><span class="info-label">Director:</span><span class="info-value">${movie.director}</span></div>
+                    <div class="info-row"><span class="info-label">Reparto:</span><span class="info-value">${movie.cast}</span></div>
+                    <div class="info-row"><span class="info-label">Géneros:</span><span class="info-value">${movie.genres}</span></div>
+                    <div class="info-row"><span class="info-label">Estreno:</span><span class="info-value">${movie.release}</span></div>
+                    <div class="info-row"><span class="info-label">Clasificación:</span><span class="info-value">${movie.classification}</span></div>
+    
+                    <div class="tags">
+                        ${movie.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+    
+                    <div class="detail-buttons">
+                        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1"><button class="btn-play-large">▶ Reproducir</button></a>
+                        <button class="btn-add">+ Mi Lista</button>
+                        <button class="btn-like">👍</button>
+                    </div>
                 </div>
-            </div>
-        `;
-
-        const trailerBtn = document.querySelector('.btn-trailer');
-        if (trailerBtn) {
-            trailerBtn.addEventListener('click', () => {
-                window.open(movie.trailer, '_blank');
-            });
+    
+                <div class="detail-sidebar">
+                    <div class="trailer-container">
+                        <div class="trailer-placeholder">
+                            <img src="${movie.backdrop}" alt="${movie.title}" class="poster-preview">
+                        </div>
+                        <button class="btn-trailer" data-trailer="${movie.trailer}">▶ Ver Tráiler</button>
+                    </div>
+                </div>
+            `;
+    
+            // ▶ Evento del botón de tráiler
+            const trailerBtn = document.querySelector('.btn-trailer');
+            if (trailerBtn) {
+                trailerBtn.addEventListener('click', () => {
+                    window.open(movie.trailer, '_blank');
+                });
+            }
         }
+    }
 
-        cacheDOMElements();
-        bindEvents();
-    };
+    initMovieNavigation();
 
     const initSimilarMovies = () => {
         const similarContainer = document.getElementById('similar-movies');
         if (!similarContainer) return;
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const movieId = urlParams.get('id');
+        const movieId = window.localStorage.getItem('selectedMovie');
         if (!movieId) return;
 
         const allMovies = [
@@ -505,15 +549,16 @@
         const currentMovie = allMovies.find(m => m.id === movieId);
         if (!currentMovie) return;
 
-        const similares = allMovies.filter(m => m.genres === currentMovie.genres && m.id !== currentMovie.id);
+        const similares = allMovies.filter(
+            m => m.genres === currentMovie.genres && m.id !== currentMovie.id
+        );
 
         if (similares.length === 0) {
-            similarContainer.innerHTML = '<p style="color: #999; padding: 20px;">No hay películas similares disponibles.</p>';
+            similarContainer.innerHTML = `<p>No hay películas similares disponibles.</p>`;
         } else {
             similarContainer.innerHTML = '';
             similares.forEach(sim => {
-                const card = document.createElement('a');
-                card.href = `movie-detail.html?id=${sim.id}`;
+                const card = document.createElement('div');
                 card.classList.add('movie-section');
                 card.dataset.id = sim.id;
                 card.innerHTML = `
@@ -525,15 +570,18 @@
                         <span class="movie-rating">${sim.rating}</span>
                     </div>
                 `;
-                card.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.location.href = card.href;
+                card.addEventListener('click', () => {
+                    window.localStorage.setItem('selectedMovie', sim.id);
+                    window.location.reload();
                 });
                 similarContainer.appendChild(card);
             });
         }
     };
 
+    initSimilarMovies();
+
+    // Registro de usuario
     const handleRegister = (e) => {
         e.preventDefault();
         const formData = new FormData(e.target);
@@ -547,8 +595,10 @@
             confirmPassword: document.getElementById('confirm-password-error')
         };
 
+        // Limpiar errores
         Object.values(errorEls).forEach(el => { if (el) el.textContent = ''; });
 
+        // Validaciones
         if (!data.username?.trim()) {
             errors.username = 'El nombre de usuario es obligatorio';
         }
@@ -562,24 +612,27 @@
             errors.confirmPassword = 'Las contraseñas no coinciden';
         }
 
+        // Mostrar errores
         Object.entries(errors).forEach(([key, msg]) => {
             if (errorEls[key]) errorEls[key].textContent = msg;
         });
 
         if (Object.keys(errors).length > 0) return;
 
+        // Verificar usuario existente
         if (state.users.some(u => u.username === data.username || u.email === data.email)) {
             if (errorEls.username) errorEls.username.textContent = 'El nombre o correo ya existe';
             return;
         }
 
+        // Registrar usuario
         state.users.push({ username: data.username, email: data.email, password: data.password });
         state.currentUser = data.username;
         state.userLists[data.username] = [];
         state.userLikes[data.username] = [];
 
         const successEl = document.getElementById('success-message');
-        if (successEl) successEl.textContent = 'Usuario registrado correctamente';
+        if (successEl) successEl.textContent = 'Usuario registrado correctamente ✅';
 
         setTimeout(() => {
             e.target.reset();
@@ -588,6 +641,7 @@
         }, 900);
     };
 
+    // Búsqueda
     const handleSearch = () => {
         if (!dom.searchInput || !dom.searchResults) return;
         
@@ -596,45 +650,32 @@
 
         if (!query) return;
 
-        const allMovies = [
-            { id: "pelicula1", title: "Operación Centella" },
-            { id: "pelicula2", title: "Risas a Medianoche" },
-            { id: "pelicula3", title: "Harta" },
-            { id: "pelicula4", title: "El Juego del Miedo" },
-            { id: "pelicula5", title: "El Último Horizonte" },
-            { id: "pelicula6", title: "Velocidad Mortal" },
-            { id: "pelicula7", title: "Unas Vacaciones de Locura" },
-            { id: "pelicula8", title: "Corazón de Hielo" },
-            { id: "pelicula9", title: "Noche de Pánico" },
-            { id: "pelicula10", title: "Sueños Eléctricos" },
-            { id: "pelicula11", title: "Golpe Final" },
-            { id: "pelicula12", title: "Una Boda Imposible" },
-            { id: "pelicula13", title: "Bajo la Lluvia" },
-            { id: "pelicula14", title: "El Experimento" },
-            { id: "pelicula15", title: "Pesadilla Final" }
-        ];
+        const movies = document.querySelectorAll('.movie-card, .grid-card');
+        const matches = [];
 
-        const matches = allMovies.filter(m => 
-            m.title.toLowerCase().includes(query)
-        );
+        movies.forEach(movie => {
+            const titleEl = movie.querySelector('h4');
+            if (titleEl?.textContent.toLowerCase().includes(query)) {
+                matches.push({
+                    title: titleEl.textContent,
+                    link: movie.getAttribute('href') || '#'
+                });
+            }
+        });
 
         if (matches.length === 0) {
             dom.searchResults.innerHTML = '<p>No se encontraron resultados</p>';
         } else {
             matches.forEach(m => {
                 const item = document.createElement('a');
-                item.href = `movie-detail.html?id=${m.id}`;
+                item.href = m.link;
                 item.textContent = m.title;
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    toggleModal(dom.searchModal, false);
-                    window.location.href = item.href;
-                });
                 dom.searchResults.appendChild(item);
             });
         }
     };
 
+    // Mi Lista
     const handleList = (btn) => {
         if (!state.currentUser) {
             alert('Debes registrarte para usar Mi Lista');
@@ -657,6 +698,7 @@
         }
     };
 
+    // Likes
     const handleLike = (btn) => {
         if (!state.currentUser) {
             alert('Debes registrarte para dar like');
@@ -679,16 +721,13 @@
         }
     };
 
+    // Obtener título de película
     const getMovieTitle = (btn) => {
-        const detailMain = btn.closest('.detail-main');
-        if (detailMain) {
-            const titleEl = detailMain.querySelector('.info-title');
-            return titleEl?.textContent;
-        }
         const card = btn.closest('.movie-card') || btn.closest('.grid-card');
         return card?.querySelector('h4')?.textContent;
     };
 
+    // Restaurar datos de usuario
     const restoreUserData = () => {
         if (!state.currentUser) return;
 
@@ -706,6 +745,7 @@
         });
     };
 
+    // Animaciones de entrada
     const initAnimations = () => {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -727,6 +767,7 @@
         document.querySelectorAll('.movie-card, .grid-card').forEach(card => observer.observe(card));
     };
 
+    // Cargar al estar listo el DOM
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
             init();
