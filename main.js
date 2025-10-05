@@ -170,10 +170,15 @@
     const initMovieNavigation = () => {    
 
         document.querySelectorAll('.movie-card').forEach(card => {
-            card.addEventListener('click', () => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
                 const movieId = card.dataset.id;
-                localStorage.setItem('selectedMovie', movieId);
+                window.location.href = `movie-detail.html?id=${movieId}`;
             });
+            
+            // En movie-detail.html, leer el parámetro
+            const urlParams = new URLSearchParams(window.location.search);
+            const movieId = urlParams.get('id');
         });
 
         document.querySelectorAll('.grid-card').forEach(card => {
@@ -182,7 +187,6 @@
                 localStorage.setItem('selectedMovie', movieId);
             });
         });
-    
         if (window.location.pathname.includes('movie-detail.html')) {
             const movieId = localStorage.getItem('selectedMovie');
             const infoSection = document.querySelector('.detail-info-section .detail-container');
