@@ -77,9 +77,6 @@
         // Botones de películas
         dom.addButtons.forEach(btn => btn.addEventListener('click', () => handleList(btn)));
         dom.likeButtons.forEach(btn => btn.addEventListener('click', () => handleLike(btn)));
-        dom.playButtons.forEach(btn => btn.addEventListener('click', () => alert('▶ Iniciando reproducción...')));
-        if (dom.trailerBtn) dom.trailerBtn.addEventListener('click', () => alert('▶ Abriendo tráiler...'));
-        dom.infoButtons.forEach(btn => btn.addEventListener('click', () => alert('ℹ️ Más información')));
     };
 
     // Toggle modal

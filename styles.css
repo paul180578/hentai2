@@ -488,6 +488,16 @@ body{
     position:relative;
 }
 
+a, a:visited {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+a:hover, a:focus {
+    text-decoration: none !important;
+    opacity: 0.9; /* efecto leve al pasar el mouse, opcional */
+}
+
 .movie-card:hover{
     transform:scale(1.05);
     z-index:10;
