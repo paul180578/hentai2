@@ -663,6 +663,7 @@ a:hover, a:focus {
 
 .btn-play-large,.btn-add,.btn-like{
     padding:15px 35px;
+    width: auto;
     font-size:18px;
     font-weight:600;
     border:none;
