@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamFlix - Detalles de Película</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <h1 class="logo">STREAMFLIX</h1>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="browse.html" class="active">Películas</a></li>
+                    <li><a href="browse.html">Series</a></li>
+                    <li><a href="browse.html">Mi Lista</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Buscar películas...">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <div class="user-profile">
+                    <div class="avatar"></div>
+                    <div class="user-menu hidden">
+                        <p class="username">Usuario1</p>
+                        <button class="change-user">Cambiar usuario</button>
+                        <button class="clear-data">Limpiar Mi Lista y Likes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="modal hidden" id="register-modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <h2>Registro de Usuario</h2>
+            <form id="user-form" novalidate>
+                <div class="form-group">
+                    <label for="username">Nombre de usuario:</label>
+                    <input type="text" id="username" name="username" required>
+                    <span class="error-message" id="username-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Correo electrónico:</label>
+                    <input type="email" id="email" name="email" required>
+                    <span class="error-message" id="email-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" name="password" required>
+                    <span class="error-message" id="password-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirmar contraseña:</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required>
+                    <span class="error-message" id="confirm-password-error"></span>
+                </div>
+
+                <button type="submit">Registrarse</button>
+                <span class="success-message" id="success-message"></span>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de búsqueda -->
+    <div class="modal hidden" id="search-modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-search">&times;</span>
+            <h2>Buscar en StreamFlix</h2>
+            <input type="text" id="search-input" placeholder="Escribe el título de la película...">
+            <div id="search-results" class="search-results"></div>
+        </div>
+    </div>
+
+    <section class="detail-info-section">
+        <div class="detail-container">
+          <div class="movie-detail-content">Cargando información...</div>
+        </div>
+      </section>
+      
+      <section class="movie-section">
+        <h3 class="section-title">Películas Similares</h3>
+        <div class="movie-row" id="similar-movies"></div>
+      </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1">Preguntas frecuentes</a>
+                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1">Centro de ayuda</a>
+                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1">Términos de uso</a>
+                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=RDdQw4w9WgXcQ&start_radio=1">Privacidad</a>
+            </div>
+            <p class="footer-text">© 2025 StreamFlix. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    <script src="main.js"></script>
+</body>
+</html>
