@@ -17,7 +17,6 @@ body{
     overflow-x:hidden;
 }
 
-/* Navbar */
 .navbar{
     position:fixed;
     top:0;
@@ -92,7 +91,6 @@ body{
     cursor:pointer;
 }
 
-/* User Profile */
 .user-profile{position:relative;cursor:pointer}
 
 .user-menu{
@@ -111,7 +109,6 @@ body{
 
 .user-menu.hidden{display:none}
 
-/* Search */
 .search-container{display:flex;gap:5px}
 
 .search-input{
@@ -120,7 +117,222 @@ body{
     border:none;
 }
 
-/* Hero Section */
+.img-portada{
+    width:100%;
+    height:400px;
+    background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:rgba(255,255,255,.3);
+    font-size:24px;
+    margin-top:70px;
+}
+
+.hero-banner{
+    position:relative;
+    display: flex;
+    margin-top:70px;
+    margin-bottom:50px;
+}
+
+
+.detail-info-section {
+    position: relative;
+    margin-top: 70px; 
+    padding: 60px 50px;
+    background-color: var(--black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.detail-info-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0.9) 100%);
+    z-index: 1;
+}
+
+.detail-container {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: center;
+    gap: 60px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.detail-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+
+.detail-main .info-title {
+    font-size: 52px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.detail-main .info-meta {
+    font-size: 18px;
+    color: var(--light-gray);
+}
+
+.detail-main .info-description {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--light-gray);
+    max-width: 90%;
+    margin-top: 15px;
+}
+
+.detail-main .info-row {
+    font-size: 16px;
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.detail-main .info-label {
+    color: var(--gray);
+    min-width: 120px;
+}
+
+.detail-main .info-value {
+    color: var(--white);
+}
+
+.detail-main .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.detail-main .tag {
+    padding: 6px 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    font-size: 14px;
+    color: var(--light-gray);
+    transition: all var(--transition);
+}
+
+.detail-main .tag:hover {
+    background-color: var(--white);
+    color: var(--black);
+}
+
+.detail-main .detail-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.detail-main .btn-play-large,
+.detail-main .btn-add,
+.detail-main .btn-like {
+    padding: 14px 35px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.detail-main .btn-play-large {
+    background-color: var(--white);
+    color: var(--black);
+}
+
+.detail-main .btn-play-large:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.detail-main .btn-add,
+.detail-main .btn-like {
+    background-color: rgba(109, 109, 110, 0.7);
+    color: var(--white);
+}
+
+.detail-main .btn-add:hover,
+.detail-main .btn-like:hover {
+    background-color: rgba(109, 109, 110, 0.9);
+}
+
+.detail-sidebar {
+    text-align: center;
+}
+
+.detail-sidebar .trailer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.detail-sidebar .poster-preview {
+    width: 100%;
+    max-width: 420px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.detail-sidebar img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.detail-sidebar .btn-trailer {
+    width: 100%;
+    padding: 12px 0;
+    background-color: var(--red);
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color var(--transition);
+}
+
+.detail-sidebar .btn-trailer:hover {
+    background-color: #c40812;
+}
+
+@media (max-width: 768px) {
+    .detail-info-section {
+        padding: 40px 20px;
+    }
+
+    .detail-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .detail-main .info-title {
+        font-size: 36px;
+    }
+
+    .detail-main .info-description {
+        font-size: 16px;
+    }
+
+    .detail-sidebar .poster-preview {
+        max-width: 100%;
+    }
+}
+
 .hero{
     position:relative;
     height:80vh;
@@ -200,8 +412,55 @@ body{
 
 .btn-info:hover{background-color:rgba(109,109,110,.5)}
 
-/* Movie Sections */
-.movie-section{padding:40px 50px}
+.movie-section {
+    padding: 40px 50px;
+}
+
+.movie-row {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px 0;
+    scroll-behavior: smooth;
+}
+
+.movie-card {
+    min-width: 250px;
+    cursor: pointer;
+    transition: transform var(--transition);
+    position: relative;
+    overflow: hidden; /* 🔒 Evita que la imagen se desborde */
+    border-radius: 6px;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+/* Contenedor del póster */
+.movie-poster {
+    width: 100%;
+    height: 350px;
+    border-radius: 6px;
+    overflow: hidden; /* 🔒 Evita que la imagen sobresalga */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Imagen interna bien contenida */
+.movie-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Escala correctamente sin deformar */
+    object-position: center;
+    display: block;
+    border-radius: 6px;
+}
+
 
 .section-title{
     font-size:22px;
@@ -259,7 +518,6 @@ body{
     font-size:14px;
 }
 
-/* Browse Page */
 .browse-header{padding:120px 50px 30px}
 
 .browse-title{
@@ -308,11 +566,24 @@ body{
 
 .grid-card:hover{transform:scale(1.05)}
 
-.grid-poster{
-    width:100%;
-    height:350px;
-    margin-bottom:10px;
+.grid-poster {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    border-radius: 4px;
+    overflow: hidden; 
+    background-color: #000; /* Fondo por si no carga la imagen */
 }
+
+/* Aplica la imagen correctamente dentro del div */
+.grid-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Escala la imagen sin deformarla */
+    object-position: center; /* Centra la imagen */
+    display: block;
+}
+
 
 .grid-info h4{
     font-size:16px;
@@ -326,7 +597,6 @@ body{
     margin-bottom:5px;
 }
 
-/* Detail Page */
 .detail-hero{
     position:relative;
     height:85vh;
@@ -607,7 +877,6 @@ button{
     font-size:13px;
 }
 
-/* Responsive */
 @media (max-width:768px){
     .navbar{padding:15px 20px}
     .nav-menu{display:none}

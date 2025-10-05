@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StreamFlix - Inicio</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <!-- Barra de navegación -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-left">
@@ -74,33 +75,30 @@
             <div id="search-results" class="search-results"></div>
         </div>
     </div>
-    
-    <!-- Hero Banner Principal -->
+
     <section class="hero-banner">
         <div class="hero-content">
-            <h2 class="hero-title">Película Destacada</h2>
+            <h2 class="hero-title">HARTA</h2>
             <p class="hero-description">
-                Una emocionante aventura que te mantendrá al borde de tu asiento. 
-                Descubre la historia más épica del año con efectos visuales 
-                impresionantes y un elenco estelar.
+                Una madre soltera llega al límite debido a sus dificultades económicas. Desesperada, sin tener dónde
+                vivir y viendo amenazada la vida de su hija, irrumpe en un banco.
             </p>
             <div class="hero-buttons">
                 <button class="btn-play">▶ Reproducir</button>
                 <button class="btn-info">ℹ Más información</button>
             </div>
         </div>
-        <div class="hero-fade"></div>
-        <!-- Aquí va tu imagen de hero -->
-        <div class="hero-image-placeholder">
-            [TU IMAGEN HERO 1920x1080]
+        <div class="hero-fade">
+            <div class="hero-image-placeholder">
+                <img src="img/destacada.jpg" title="Pelicula Destacada" class="img-portada" />
+            </div>
         </div>
     </section>
 
-    <!-- Sección de Películas Populares -->
     <section class="movie-section">
         <h3 class="section-title">Populares en StreamFlix</h3>
         <div class="movie-row">
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula1">
                 <div class="movie-poster">
                     [IMAGEN 1]
                 </div>
@@ -110,7 +108,7 @@
                 </div>
             </a>
 
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula2">
                 <div class="movie-poster">
                     [IMAGEN 2]
                 </div>
@@ -119,16 +117,17 @@
                     <span class="movie-rating">★ 9.0</span>
                 </div>
             </a>
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula3">
                 <div class="movie-poster">
                     [IMAGEN 3]
                 </div>
                 <div class="movie-info">
                     <h4>Título de Película 3</h4>
+                    
                     <span class="movie-rating">★ 7.8</span>
                 </div>
             </a>
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula4">
                 <div class="movie-poster">
                     [IMAGEN 4]
                 </div>
@@ -137,7 +136,7 @@
                     <span class="movie-rating">★ 8.2</span>
                 </div>
             </a>
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula5">
                 <div class="movie-poster">
                     [IMAGEN 5]
                 </div>
@@ -153,7 +152,7 @@
     <section class="movie-section">
         <h3 class="section-title">Tendencias Ahora</h3>
         <div class="movie-row">
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula6">
                 <div class="movie-poster">
                     [IMAGEN 6]
                 </div>
@@ -162,7 +161,7 @@
                     <span class="movie-rating">★ 9.2</span>
                 </div>
             </a>
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula7">
                 <div class="movie-poster">
                     [IMAGEN 7]
                 </div>
@@ -171,7 +170,7 @@
                     <span class="movie-rating">★ 8.4</span>
                 </div>
             </a>
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula8">
                 <div class="movie-poster">
                     [IMAGEN 8]
                 </div>
@@ -180,7 +179,7 @@
                     <span class="movie-rating">★ 7.9</span>
                 </div>
             </a>
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula9">
                 <div class="movie-poster">
                     [IMAGEN 9]
                 </div>
@@ -189,24 +188,21 @@
                     <span class="movie-rating">★ 8.7</span>
                 </div>
             </a>
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula10">
                 <div class="movie-poster">
                     [IMAGEN 10]
                 </div>
-                    <div class="movie-info">
-                        <h4>Título de Película 10</h4>
-                        <span class="movie-rating">★ 9.1</span>
-                    </div>
+                <div class="movie-info">
+                    <h4>Título de Película 10</h4>
+                    <span class="movie-rating">★ 9.1</span>
                 </div>
             </a>
-        </div>
     </section>
 
-    <!-- Sección de Acción -->
     <section class="movie-section">
-        <h3 class="section-title">Acción Explosiva</h3>
+        <h3 class="section-title">Destacadas</h3>
         <div class="movie-row">
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula11">
                 <div class="movie-poster">
                     [IMAGEN 11]
                 </div>
@@ -215,7 +211,7 @@
                     <span class="movie-rating">★ 8.3</span>
                 </div>
             </a>
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula12">
                 <div class="movie-poster">
                     [IMAGEN 12]
                 </div>
@@ -224,7 +220,7 @@
                     <span class="movie-rating">★ 8.6</span>
                 </div>
             </a>
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula13">
                 <div class="movie-poster">
                     [IMAGEN 13]
                 </div>
@@ -233,7 +229,7 @@
                     <span class="movie-rating">★ 7.7</span>
                 </div>
             </a>
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula14">
                 <div class="movie-poster">
                     [IMAGEN 14]
                 </div>
@@ -242,7 +238,7 @@
                     <span class="movie-rating">★ 8.8</span>
                 </div>
             </a>
-            <a href="movie-detail.html" class="movie-card">
+            <a href="movie-detail.html" class="movie-card" data-id="pelicula15">
                 <div class="movie-poster">
                     [IMAGEN 15]
                 </div>
@@ -268,4 +264,5 @@
     </footer>
     <script src="main.js"></script>
 </body>
+
 </html>
